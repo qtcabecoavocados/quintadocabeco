@@ -33,43 +33,39 @@ html { scroll-behavior: smooth; }
    ========================================================= */
 @view-transition { navigation: auto; }
 
-/* Keep header & footer anchored so they morph rather than flicker */
+/* Keep header & footer anchored so they stay put, never flicker */
 .site-header { view-transition-name: site-header; }
 .site-footer { view-transition-name: site-footer; }
 
-/* Elegant, unhurried cross-fade for the page body */
+/* One slow, fully-overlapping cross-dissolve — no lurch, just a calm fade.
+   Old and new share the same long duration so they melt into each other. */
+::view-transition-group(root) {
+  animation-duration: .9s;
+  animation-timing-function: cubic-bezier(.33, 0, .2, 1);
+}
 ::view-transition-old(root) {
-  animation: vt-fade-out .45s cubic-bezier(.4, 0, .2, 1) both;
+  animation: vt-out .9s cubic-bezier(.33, 0, .2, 1) both;
 }
 ::view-transition-new(root) {
-  animation: vt-fade-in .6s cubic-bezier(.2, .7, .2, 1) both;
+  animation: vt-in .9s cubic-bezier(.33, 0, .2, 1) both;
 }
-@keyframes vt-fade-out { to { opacity: 0; } }
-@keyframes vt-fade-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: none; }
-}
+@keyframes vt-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes vt-in  { from { opacity: 0; } to { opacity: 1; } }
 
-/* Gentle entrance for content on load (fallback + extra polish) */
-@keyframes rise {
-  from { opacity: 0; transform: translateY(14px); }
+/* First-load entrance: a single, whole-page settle (doesn't fight the
+   cross-dissolve during navigation the way per-section motion did). */
+@keyframes page-settle {
+  from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: none; }
 }
-.hero-inner,
-.page-hero,
-.section,
-.band,
-.explore,
-.gallery {
-  animation: rise .8s cubic-bezier(.2, .7, .2, 1) both;
-}
+body { animation: page-settle .7s cubic-bezier(.33, 0, .2, 1) both; }
 
 /* Respect reduced-motion preferences */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   ::view-transition-old(root),
   ::view-transition-new(root) { animation: none; }
-  .hero-inner, .page-hero, .section, .band, .explore, .gallery { animation: none; }
+  body { animation: none; }
 }
 
 body {
