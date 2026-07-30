@@ -26,6 +26,52 @@
 
 html { scroll-behavior: smooth; }
 
+/* =========================================================
+   Smooth passage between pages
+   Cross-document View Transitions (Chromium/Safari TP);
+   gracefully ignored where unsupported.
+   ========================================================= */
+@view-transition { navigation: auto; }
+
+/* Keep header & footer anchored so they morph rather than flicker */
+.site-header { view-transition-name: site-header; }
+.site-footer { view-transition-name: site-footer; }
+
+/* Elegant, unhurried cross-fade for the page body */
+::view-transition-old(root) {
+  animation: vt-fade-out .45s cubic-bezier(.4, 0, .2, 1) both;
+}
+::view-transition-new(root) {
+  animation: vt-fade-in .6s cubic-bezier(.2, .7, .2, 1) both;
+}
+@keyframes vt-fade-out { to { opacity: 0; } }
+@keyframes vt-fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Gentle entrance for content on load (fallback + extra polish) */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+.hero-inner,
+.page-hero,
+.section,
+.band,
+.explore,
+.gallery {
+  animation: rise .8s cubic-bezier(.2, .7, .2, 1) both;
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  ::view-transition-old(root),
+  ::view-transition-new(root) { animation: none; }
+  .hero-inner, .page-hero, .section, .band, .explore, .gallery { animation: none; }
+}
+
 body {
   margin: 0;
   background: var(--beige);
