@@ -11,9 +11,13 @@ const CONFIG = {
   // Preço por noite (€) por mês: índice 0 = janeiro
   nightly: [150, 150, 160, 190, 200, 240, 280, 280, 240, 190, 150, 170],
   monthsAhead: 18,
-  // Demonstração: datas ocupadas relativas a hoje [início, noites].
-  // Em produção, vêm da sincronização iCal com o Booking e o Airbnb.
-  demoBusy: [[4, 5], [16, 7], [31, 4], [45, 10], [70, 7], [88, 5], [120, 14], [150, 7], [190, 21], [230, 7]],
+  // Datas ocupadas: geradas pela sincronização com o Booking e o Airbnb
+  // (scripts/sync-calendars.mjs). Lê-se primeiro a versão mais recente no GitHub
+  // e, se falhar, a cópia publicada com o site.
+  availability: [
+    'https://raw.githubusercontent.com/qtcabecoavocados/quintadocabeco/main/data/availability.json',
+    'data/availability.json',
+  ],
 };
 
 const T = {
@@ -35,6 +39,8 @@ const T = {
     done: (d) => `${d.name}, recebemos o seu pedido de ${d.nights} de ${d.in} a ${d.out}, para ${d.guests}. Valor total: ${d.total}; sinal de ${d.deposit} por ${d.pay}.`,
     guests: n => `${n} ${n === 1 ? 'hóspede' : 'hóspedes'}`,
     card: 'cartão',
+    availOk: d => `Disponibilidade sincronizada com o Booking e o Airbnb · atualizada a ${d}.`,
+    availErr: 'Não foi possível carregar a disponibilidade. Confirmaremos as datas consigo antes de qualquer pagamento.',
     cats: { facade: 'Fachada', 'common-area': 'Sala', kitchen: 'Cozinha', 'pool-area': 'Exterior', 'room-1': 'Quarto 1', 'room-2': 'Quarto 2', 'room-3': 'Quarto 3', 'room-4': 'Quarto 4', bathrooms: 'Casas de banho', 'laundry-room': 'Lavandaria' },
     all: 'Todas',
     photo: 'Fotografia',
@@ -57,6 +63,8 @@ const T = {
     done: (d) => `${d.name}, we have received your request for ${d.nights} from ${d.in} to ${d.out}, for ${d.guests}. Total: ${d.total}; deposit of ${d.deposit} by ${d.pay}.`,
     guests: n => `${n} ${n === 1 ? 'guest' : 'guests'}`,
     card: 'card',
+    availOk: d => `Availability synced with Booking.com and Airbnb · updated ${d}.`,
+    availErr: 'We could not load availability. We will confirm your dates with you before any payment.',
     cats: { facade: 'Façade', 'common-area': 'Living room', kitchen: 'Kitchen', 'pool-area': 'Outdoors', 'room-1': 'Bedroom 1', 'room-2': 'Bedroom 2', 'room-3': 'Bedroom 3', 'room-4': 'Bedroom 4', bathrooms: 'Bathrooms', 'laundry-room': 'Laundry' },
     all: 'All',
     photo: 'Photo',
@@ -81,7 +89,7 @@ function setLang(l) {
   document.documentElement.dataset.lang = l;
   $$('[data-set-lang]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.setLang === l)));
   try { localStorage.setItem('qdc-lang', l); } catch (e) {}
-  renderTabs(); renderGrid(); renderCalendar(); updateQuote();
+  renderTabs(); renderGrid(); renderCalendar(); updateQuote(); renderAvailNote();
   if (!$('#bookDone').hidden) $('#doneSummary').textContent = lastDone ? t().done(formatDone(lastDone)) : '';
 }
 $$('[data-set-lang]').forEach(b => b.addEventListener('click', () => setLang(b.dataset.setLang)));
@@ -154,8 +162,35 @@ const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')
 const parse = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
 const addDays = (d, n) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
 const today = new Date(); today.setHours(0, 0, 0, 0);
+// Cada dia guardado representa uma noite ocupada (o dia de saída fica livre para nova entrada)
 const busy = new Set();
-CONFIG.demoBusy.forEach(([start, n]) => { for (let i = 0; i < n; i++) busy.add(iso(addDays(today, start + i))); });
+let availUpdated = null, availState = 'loading';
+async function loadAvailability() {
+  for (const url of CONFIG.availability) {
+    try {
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) continue;
+      const data = await res.json();
+      busy.clear();
+      Object.values(data.sources || {}).forEach(s => (s.ranges || []).forEach(r => {
+        for (let d = parse(r.start), end = parse(r.end); d < end; d = addDays(d, 1)) busy.add(iso(d));
+      }));
+      availUpdated = data.updated ? new Date(data.updated) : null;
+      availState = 'ok';
+      // Se a estadia escolhida deixou de estar livre, limpa a escolha
+      if (checkin && checkout && rangeHasBusy(checkin, checkout)) { checkin = checkout = null; syncInputs(); }
+      renderCalendar(); updateQuote(); renderAvailNote();
+      return;
+    } catch (e) { /* tenta a seguinte */ }
+  }
+  availState = 'error'; renderAvailNote();
+}
+function renderAvailNote() {
+  const el = $('#availNote'); if (!el) return;
+  if (availState === 'ok' && availUpdated) el.textContent = t().availOk(availUpdated.toLocaleString(lang === 'pt' ? 'pt-PT' : 'en-GB', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }));
+  else if (availState === 'error') el.textContent = t().availErr;
+  else el.textContent = '';
+}
 
 let checkin = null, checkout = null;
 let viewStart = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -303,3 +338,4 @@ try { saved = localStorage.getItem('qdc-lang'); } catch (e) {}
 const initial = saved || (navigator.language && !navigator.language.toLowerCase().startsWith('pt') ? 'en' : 'pt');
 renderGrid();
 setLang(initial);
+loadAvailability();

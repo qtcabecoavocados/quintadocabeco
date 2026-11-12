@@ -18,8 +18,36 @@ Site de uma página, bilingue (PT/EN), com reserva direta. Feito pela BIANES com
 - Orçamento automático e escolha do pagamento do sinal (MB WAY, Multibanco, cartão)
 - Termos de reserva e cancelamento, política de privacidade, n.º de RNAL e Livro de Reclamações
 
+## Sincronização com o Booking e o Airbnb
+A tarefa automática `.github/workflows/sync-calendars.yml` corre a cada 30 minutos (o GitHub pode atrasar alguns minutos) e:
+1. **Importa** os calendários iCal do Booking e do Airbnb e grava os dias ocupados em `data/availability.json`, que o site lê.
+2. **Exporta** as reservas diretas para `calendar.ics`, para o Booking e o Airbnb bloquearem essas datas.
+
+Só as datas são copiadas; nomes, telefones e notas das reservas nunca ficam no repositório. Se um calendário falhar, mantêm-se os últimos dados conhecidos.
+
+### Ativar (uma vez)
+1. **Booking** → Extranet → Tarifas e disponibilidade → Sincronizar calendários → *Exportar calendário* → copiar a ligação.
+2. **Airbnb** → Calendário → Disponibilidade → Sincronizar calendários → *Exportar calendário* → copiar a ligação.
+3. No GitHub, em **Settings → Secrets and variables → Actions → New repository secret**, criar:
+   - `BOOKING_ICAL_URL` com a ligação do Booking
+   - `AIRBNB_ICAL_URL` com a ligação do Airbnb
+4. Em **Actions → Sincronizar calendários → Run workflow**, correr uma vez para confirmar.
+5. No Booking e no Airbnb, em *Importar calendário*, colar `https://qtcabecoavocados.github.io/quintadocabeco/calendar.ics` (nome: «Site Quinta do Cabeço»).
+
+### Reservas diretas
+Enquanto os pagamentos não estão ligados, as reservas feitas pelo site são confirmadas à mão. Para bloquear as datas em todo o lado, acrescentar a reserva a `data/direct-bookings.json` (a data de saída não fica ocupada):
+
+```json
+[
+  { "start": "2027-07-03", "end": "2027-07-10", "note": "reserva direta 2027-001" }
+]
+```
+
+O repositório é público: na `note` usar só uma referência, nunca o nome ou os contactos do hóspede.
+
+A sincronização corre sozinha quando este ficheiro muda.
+
 ## Por ligar / confirmar com o cliente
-- **Sincronização iCal com o Booking e o Airbnb:** o calendário usa datas ocupadas de demonstração (`CONFIG.demoBusy`).
 - **Pagamentos e email de confirmação:** o formulário mostra a confirmação mas ainda não envia nada; o ponto de ligação está assinalado no `script.js` (submissão do `#bookForm`). Precisa de um serviço de pagamentos (ex.: easypay, ifthenpay ou Stripe) e de um pequeno servidor ou função.
 - **Dados reais:** n.º de RNAL (`000000/AL`), número de WhatsApp (`351900000000`), email (`hello@quintadocabeco.com`), ligações do Booking e do Airbnb (`href="#"`), localização exata no mapa, preços por mês.
 - **Factos a confirmar:** n.º de hóspedes (8), casas de banho (3), piscina, tempos de viagem, regras da casa e política de cancelamento.
