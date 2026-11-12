@@ -8,6 +8,7 @@
   <meta property="og:title" content="Quinta do Cabeço · Tavira, Algarve">
   <meta property="og:description" content="Casa de campo numa quinta de abacates perto de Tavira. Reserve diretamente.">
   <meta property="og:image" content="images/gallery/pool-area/pool-area-04.jpg">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232C3D2E'/%3E%3Cellipse cx='32' cy='35' rx='15' ry='20' fill='%23E3B23C'/%3E%3Ccircle cx='32' cy='40' r='7' fill='%23B5673F'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
@@ -27,7 +28,7 @@
     <a href="#quartos"><span data-l="pt">Quartos</span><span data-l="en">Bedrooms</span></a>
     <a href="#galeria"><span data-l="pt">Galeria</span><span data-l="en">Gallery</span></a>
     <a href="#localizacao"><span data-l="pt">Localização</span><span data-l="en">Location</span></a>
-    <a href="#contacto"><span data-l="pt">Contacto</span><span data-l="en">Contact</span></a>
+    <a href="#contacto" data-needs-any="email whatsapp" hidden><span data-l="pt">Contacto</span><span data-l="en">Contact</span></a>
   </nav>
 
   <div class="header-actions">
@@ -194,7 +195,8 @@
   <div class="section-head">
     <p class="eyebrow"><span data-l="pt">Reserva direta</span><span data-l="en">Book direct</span></p>
     <h2><span data-l="pt">Escolha as datas e reserve sem intermediários</span><span data-l="en">Pick your dates and book without middlemen</span></h2>
-    <p class="lead"><span data-l="pt">Ao reservar aqui fala diretamente connosco e tem o melhor preço disponível. O calendário está sincronizado com o Booking e o Airbnb.</span><span data-l="en">Booking here means you deal with us directly and get the best available rate. The calendar is kept in sync with Booking.com and Airbnb.</span></p>
+    <p class="lead"><span data-l="pt">Ao reservar aqui fala diretamente connosco e tem o melhor preço disponível.</span><span data-l="en">Booking here means you deal with us directly and get the best available rate.</span>
+      <span data-needs="sync" hidden><span data-l="pt">O calendário está sincronizado com o Booking e o Airbnb.</span><span data-l="en">The calendar is kept in sync with Booking.com and Airbnb.</span></span></p>
   </div>
 
   <div class="book-grid">
@@ -215,7 +217,20 @@
     </div>
 
     <div class="book-side">
-      <form class="book-form" id="bookForm" novalidate>
+      <div class="book-soon" data-needs-none="email" hidden>
+        <h3><span data-l="pt">Reservas diretas brevemente</span><span data-l="en">Direct booking coming soon</span></h3>
+        <p><span data-l="pt">Já pode ver as datas e o valor da estadia. Os pedidos de reserva pelo site vão estar disponíveis muito em breve.</span><span data-l="en">You can already check dates and the price of your stay. Booking requests through the website will be available very soon.</span></p>
+        <div class="quote" id="quoteSoon" aria-live="polite"></div>
+        <div data-needs-any="booking airbnb" hidden>
+          <p class="or"><span data-l="pt">Entretanto, pode reservar numa plataforma:</span><span data-l="en">In the meantime, you can book on a platform:</span></p>
+          <div class="platforms">
+            <a href="#" class="btn btn-line" data-needs="booking" data-link="booking" target="_blank" rel="noopener" hidden>Booking.com</a>
+            <a href="#" class="btn btn-line" data-needs="airbnb" data-link="airbnb" target="_blank" rel="noopener" hidden>Airbnb</a>
+          </div>
+        </div>
+      </div>
+
+      <form class="book-form" id="bookForm" data-needs="email" novalidate hidden>
         <div class="row2">
           <label><span data-l="pt">Chegada</span><span data-l="en">Arrival</span>
             <input type="date" name="checkin" id="checkin" required></label>
@@ -241,7 +256,7 @@
 
         <div class="quote" id="quote" aria-live="polite"></div>
 
-        <fieldset class="pay">
+        <fieldset class="pay" data-needs="payments" hidden>
           <legend><span data-l="pt">Pagamento do sinal</span><span data-l="en">Deposit payment</span></legend>
           <label class="pay-opt"><input type="radio" name="pay" value="MB WAY" checked><span>MB WAY</span></label>
           <label class="pay-opt"><input type="radio" name="pay" value="Multibanco"><span>Multibanco</span></label>
@@ -256,17 +271,22 @@
         <p class="form-error" id="formError" role="alert"></p>
         <button type="submit" class="btn btn-block"><span data-l="pt">Pedir reserva</span><span data-l="en">Request booking</span></button>
 
-        <p class="or"><span data-l="pt">Prefere reservar numa plataforma?</span><span data-l="en">Prefer to book on a platform?</span></p>
-        <div class="platforms">
-          <a href="#" class="btn btn-line" target="_blank" rel="noopener">Booking.com</a>
-          <a href="#" class="btn btn-line" target="_blank" rel="noopener">Airbnb</a>
+        <div data-needs-any="booking airbnb" hidden>
+          <p class="or"><span data-l="pt">Prefere reservar numa plataforma?</span><span data-l="en">Prefer to book on a platform?</span></p>
+          <div class="platforms">
+            <a href="#" class="btn btn-line" data-needs="booking" data-link="booking" target="_blank" rel="noopener" hidden>Booking.com</a>
+            <a href="#" class="btn btn-line" data-needs="airbnb" data-link="airbnb" target="_blank" rel="noopener" hidden>Airbnb</a>
+          </div>
         </div>
       </form>
 
       <div class="book-done" id="bookDone" hidden>
-        <h3><span data-l="pt">Pedido recebido. Obrigado!</span><span data-l="en">Request received. Thank you!</span></h3>
+        <h3 data-needs="payments" hidden><span data-l="pt">Pedido recebido. Obrigado!</span><span data-l="en">Request received. Thank you!</span></h3>
+        <h3 data-needs-none="payments" hidden><span data-l="pt">Falta só enviar o email</span><span data-l="en">Just send the email</span></h3>
         <p id="doneSummary"></p>
-        <p><span data-l="pt">Vai receber um email de confirmação com as instruções para pagar o sinal. A reserva fica confirmada assim que o pagamento for recebido.</span><span data-l="en">You will receive a confirmation email with instructions to pay the deposit. Your booking is confirmed as soon as the payment is received.</span></p>
+        <p data-needs="payments" hidden><span data-l="pt">Vai receber um email de confirmação com as instruções para pagar o sinal. A reserva fica confirmada assim que o pagamento for recebido.</span><span data-l="en">You will receive a confirmation email with instructions to pay the deposit. Your booking is confirmed as soon as the payment is received.</span></p>
+        <p data-needs-none="payments" hidden><span data-l="pt">Abrimos o seu programa de email com o pedido já escrito. Envie-o e respondemos a confirmar as datas e a explicar como pagar o sinal. A reserva só fica confirmada depois da nossa resposta.</span><span data-l="en">We have opened your email app with the request already written. Send it and we will reply to confirm the dates and explain how to pay the deposit. Your booking is only confirmed after our reply.</span></p>
+        <p data-needs-none="payments" hidden><a href="#" id="mailAgain"><span data-l="pt">O email não abriu? Clique aqui.</span><span data-l="en">Email didn't open? Click here.</span></a></p>
         <button type="button" class="btn btn-line" id="bookAgain"><span data-l="pt">Fazer outro pedido</span><span data-l="en">Make another request</span></button>
       </div>
     </div>
@@ -309,12 +329,12 @@
 </section>
 
 <!-- ============ CONTACTO ============ -->
-<section class="contact" id="contacto">
+<section class="contact" id="contacto" data-needs-any="email whatsapp" hidden>
   <p class="eyebrow light"><span data-l="pt">Contacto</span><span data-l="en">Contact</span></p>
   <h2><span data-l="pt">Tem alguma pergunta? Fale connosco.</span><span data-l="en">Any questions? Get in touch.</span></h2>
   <div class="contact-actions">
-    <a class="btn" href="https://wa.me/351900000000" target="_blank" rel="noopener">WhatsApp</a>
-    <a class="btn btn-ghost-light" href="mailto:hello@quintadocabeco.com">hello@quintadocabeco.com</a>
+    <a class="btn" href="#" data-needs="whatsapp" data-link="whatsapp" target="_blank" rel="noopener" hidden>WhatsApp</a>
+    <a class="btn btn-ghost-light" href="#" data-needs="email" data-link="email" data-text="email" hidden></a>
   </div>
   <p class="contact-addr">Quinta do Cabeço · Tavira · Algarve · Portugal</p>
 </section>
@@ -325,7 +345,7 @@
 <footer class="site-footer">
   <div class="foot-brand">Quinta do Cabeço</div>
   <div class="foot-legal">
-    <p><span data-l="pt">Alojamento Local registado com o n.º</span><span data-l="en">Registered holiday rental (Alojamento Local) no.</span> <strong>000000/AL</strong></p>
+    <p data-needs="rnal" hidden><span data-l="pt">Alojamento Local registado com o n.º</span><span data-l="en">Registered holiday rental (Alojamento Local) no.</span> <strong data-text="rnal"></strong></p>
     <p>
       <a href="https://www.livroreclamacoes.pt" target="_blank" rel="noopener"><span data-l="pt">Livro de Reclamações Eletrónico</span><span data-l="en">Complaints Book (Livro de Reclamações)</span></a>
       · <a href="#termos"><span data-l="pt">Termos</span><span data-l="en">Terms</span></a>
@@ -335,7 +355,7 @@
   </div>
 </footer>
 
-<a class="wa-float" href="https://wa.me/351900000000" target="_blank" rel="noopener" aria-label="WhatsApp">
+<a class="wa-float" href="#" data-needs="whatsapp" data-link="whatsapp" target="_blank" rel="noopener" aria-label="WhatsApp" hidden>
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.4-.3z"/></svg>
 </a>
 

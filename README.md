@@ -47,7 +47,15 @@ O repositório é público: na `note` usar só uma referência, nunca o nome ou 
 
 A sincronização corre sozinha quando este ficheiro muda.
 
+## Dados do alojamento
+No topo do `script.js`, no objeto `SITE`, preencher o n.º de RNAL, o email, o WhatsApp e as ligações do Booking e do Airbnb. **O que estiver vazio não aparece no site** e surge sozinho quando for preenchido:
+- sem email → a secção de reserva mostra o calendário e o orçamento, com «Reservas diretas brevemente»;
+- com email → o formulário aparece e o pedido segue por email, escrito pelo próprio hóspede (até haver pagamento online);
+- sem email nem WhatsApp → a secção e o menu «Contacto» ficam escondidos;
+- sem ligações do Booking e do Airbnb → os botões das plataformas ficam escondidos;
+- sem calendários ligados → o calendário diz que a disponibilidade é indicativa.
+
 ## Por ligar / confirmar com o cliente
-- **Pagamentos e email de confirmação:** o formulário mostra a confirmação mas ainda não envia nada; o ponto de ligação está assinalado no `script.js` (submissão do `#bookForm`). Precisa de um serviço de pagamentos (ex.: easypay, ifthenpay ou Stripe) e de um pequeno servidor ou função.
-- **Dados reais:** n.º de RNAL (`000000/AL`), número de WhatsApp (`351900000000`), email (`hello@quintadocabeco.com`), ligações do Booking e do Airbnb (`href="#"`), localização exata no mapa, preços por mês.
+- **Pagamento online e email de confirmação automático:** por ligar (sugestão: easypay, que faz MB WAY, Multibanco e cartão). O ponto de ligação está assinalado no `script.js` (submissão do `#bookForm`); depois basta pôr `payments: true` em `SITE`.
+- **Dados reais:** preencher `SITE` (ver acima), a localização exata no mapa e os preços por mês (`CONFIG.nightly`).
 - **Factos a confirmar:** n.º de hóspedes (8), casas de banho (3), piscina, tempos de viagem, regras da casa e política de cancelamento.

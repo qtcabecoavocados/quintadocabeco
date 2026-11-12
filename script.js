@@ -2,6 +2,18 @@
    Quinta do Cabeço · comportamento da página
    ========================================================= */
 
+/* ---------- Dados do alojamento (preencher aqui) ----------
+   Tudo o que estiver vazio fica escondido no site e aparece sozinho
+   quando for preenchido. */
+const SITE = {
+  rnal: '',          // n.º de registo, ex.: '123456/AL'
+  email: '',         // ex.: 'reservas@quintadocabeco.pt' (ativa o formulário de pedido)
+  whatsapp: '',      // só algarismos com indicativo, ex.: '351912345678'
+  bookingUrl: '',    // página do alojamento no Booking.com
+  airbnbUrl: '',     // página do anúncio no Airbnb
+  payments: false,   // true quando o pagamento online estiver ligado
+};
+
 /* ---------- Configuração (editar aqui) ---------- */
 const CONFIG = {
   maxGuests: 8,
@@ -29,6 +41,7 @@ const T = {
     cleaning: 'Limpeza final',
     total: 'Total',
     deposit: 'Sinal a pagar agora (30%)',
+    depositLater: 'Sinal para confirmar a reserva (30%)',
     errDates: 'Escolha as datas de chegada e de saída.',
     errMin: n => `A estadia mínima é de ${n} noites.`,
     errBusy: 'Algumas das datas escolhidas já estão ocupadas.',
@@ -41,6 +54,10 @@ const T = {
     card: 'cartão',
     availOk: d => `Disponibilidade sincronizada com o Booking e o Airbnb · atualizada a ${d}.`,
     availErr: 'Não foi possível carregar a disponibilidade. Confirmaremos as datas consigo antes de qualquer pagamento.',
+    availPending: 'Disponibilidade indicativa: as datas são sempre confirmadas antes da reserva.',
+    mailSubject: (a, b) => `Pedido de reserva · ${a} a ${b}`,
+    mailBody: d => `Olá,\n\nGostaria de pedir uma reserva na Quinta do Cabeço.\n\nChegada: ${d.in}\nSaída: ${d.out}\nEstadia: ${d.nights}\nHóspedes: ${d.adults} adultos, ${d.children} crianças\nValor estimado: ${d.total} (sinal de 30%: ${d.deposit})\n\nNome: ${d.name}\nEmail: ${d.email}\nTelemóvel: ${d.phone || '-'}\n\n${d.message ? `Mensagem:\n${d.message}\n\n` : ''}Li e aceito os termos de reserva e cancelamento.\n\nObrigado,\n${d.name}`,
+    doneMail: d => `${d.name}, o pedido para ${d.nights} de ${d.in} a ${d.out} (${d.guests}, ${d.total}) está pronto a enviar.`,
     cats: { facade: 'Fachada', 'common-area': 'Sala', kitchen: 'Cozinha', 'pool-area': 'Exterior', 'room-1': 'Quarto 1', 'room-2': 'Quarto 2', 'room-3': 'Quarto 3', 'room-4': 'Quarto 4', bathrooms: 'Casas de banho', 'laundry-room': 'Lavandaria' },
     all: 'Todas',
     photo: 'Fotografia',
@@ -53,6 +70,7 @@ const T = {
     cleaning: 'Final cleaning',
     total: 'Total',
     deposit: 'Deposit due now (30%)',
+    depositLater: 'Deposit to confirm the booking (30%)',
     errDates: 'Please choose your arrival and departure dates.',
     errMin: n => `The minimum stay is ${n} nights.`,
     errBusy: 'Some of the chosen dates are already booked.',
@@ -65,6 +83,10 @@ const T = {
     card: 'card',
     availOk: d => `Availability synced with Booking.com and Airbnb · updated ${d}.`,
     availErr: 'We could not load availability. We will confirm your dates with you before any payment.',
+    availPending: 'Availability is indicative: dates are always confirmed before booking.',
+    mailSubject: (a, b) => `Booking request · ${a} to ${b}`,
+    mailBody: d => `Hello,\n\nI would like to request a booking at Quinta do Cabeço.\n\nArrival: ${d.in}\nDeparture: ${d.out}\nStay: ${d.nights}\nGuests: ${d.adults} adults, ${d.children} children\nEstimated price: ${d.total} (30% deposit: ${d.deposit})\n\nName: ${d.name}\nEmail: ${d.email}\nPhone: ${d.phone || '-'}\n\n${d.message ? `Message:\n${d.message}\n\n` : ''}I have read and accept the booking and cancellation terms.\n\nThank you,\n${d.name}`,
+    doneMail: d => `${d.name}, your request for ${d.nights} from ${d.in} to ${d.out} (${d.guests}, ${d.total}) is ready to send.`,
     cats: { facade: 'Façade', 'common-area': 'Living room', kitchen: 'Kitchen', 'pool-area': 'Outdoors', 'room-1': 'Bedroom 1', 'room-2': 'Bedroom 2', 'room-3': 'Bedroom 3', 'room-4': 'Bedroom 4', bathrooms: 'Bathrooms', 'laundry-room': 'Laundry' },
     all: 'All',
     photo: 'Photo',
@@ -82,6 +104,39 @@ const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 let lang = 'pt';
 const t = () => T[lang];
 
+let lastDone = null; // último pedido de reserva feito nesta visita
+
+/* ---------- Mostrar só o que tem dados ---------- */
+const clean = v => String(v || '').trim();
+const FLAGS = {
+  rnal: !!clean(SITE.rnal),
+  email: /^\S+@\S+\.\S+$/.test(clean(SITE.email)),
+  whatsapp: /^\d{9,15}$/.test(clean(SITE.whatsapp)),
+  booking: /^https?:\/\//.test(clean(SITE.bookingUrl)),
+  airbnb: /^https?:\/\//.test(clean(SITE.airbnbUrl)),
+  payments: !!SITE.payments,
+  sync: false, // passa a true quando há calendários do Booking/Airbnb ligados
+};
+const LINKS = {
+  email: () => `mailto:${clean(SITE.email)}`,
+  whatsapp: () => `https://wa.me/${clean(SITE.whatsapp)}`,
+  booking: () => clean(SITE.bookingUrl),
+  airbnb: () => clean(SITE.airbnbUrl),
+};
+function applyNeeds() {
+  $$('[data-needs], [data-needs-any], [data-needs-none]').forEach(el => {
+    const all = (el.dataset.needs || '').split(/\s+/).filter(Boolean);
+    const any = (el.dataset.needsAny || '').split(/\s+/).filter(Boolean);
+    const none = (el.dataset.needsNone || '').split(/\s+/).filter(Boolean);
+    el.hidden = !(all.every(k => FLAGS[k]) && (!any.length || any.some(k => FLAGS[k])) && none.every(k => !FLAGS[k]));
+  });
+  $$('[data-link]').forEach(el => { if (FLAGS[el.dataset.link]) el.href = LINKS[el.dataset.link](); });
+  $$('[data-text]').forEach(el => { el.textContent = clean(SITE[el.dataset.text]); });
+  // Depois de enviado um pedido, o formulário fica escondido até se pedir outro
+  if (lastDone) $('#bookForm').hidden = true;
+}
+applyNeeds();
+
 /* ---------- Idioma ---------- */
 function setLang(l) {
   lang = l;
@@ -90,7 +145,7 @@ function setLang(l) {
   $$('[data-set-lang]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.setLang === l)));
   try { localStorage.setItem('qdc-lang', l); } catch (e) {}
   renderTabs(); renderGrid(); renderCalendar(); updateQuote(); renderAvailNote();
-  if (!$('#bookDone').hidden) $('#doneSummary').textContent = lastDone ? t().done(formatDone(lastDone)) : '';
+  renderDone();
 }
 $$('[data-set-lang]').forEach(b => b.addEventListener('click', () => setLang(b.dataset.setLang)));
 
@@ -177,6 +232,8 @@ async function loadAvailability() {
       }));
       availUpdated = data.updated ? new Date(data.updated) : null;
       availState = 'ok';
+      FLAGS.sync = ['booking', 'airbnb'].some(k => data.sources?.[k]);
+      applyNeeds();
       // Se a estadia escolhida deixou de estar livre, limpa a escolha
       if (checkin && checkout && rangeHasBusy(checkin, checkout)) { checkin = checkout = null; syncInputs(); }
       renderCalendar(); updateQuote(); renderAvailNote();
@@ -187,7 +244,8 @@ async function loadAvailability() {
 }
 function renderAvailNote() {
   const el = $('#availNote'); if (!el) return;
-  if (availState === 'ok' && availUpdated) el.textContent = t().availOk(availUpdated.toLocaleString(lang === 'pt' ? 'pt-PT' : 'en-GB', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }));
+  if (availState === 'ok' && !FLAGS.sync) el.textContent = t().availPending;
+  else if (availState === 'ok' && availUpdated) el.textContent = t().availOk(availUpdated.toLocaleString(lang === 'pt' ? 'pt-PT' : 'en-GB', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }));
   else if (availState === 'error') el.textContent = t().availErr;
   else el.textContent = '';
 }
@@ -277,16 +335,16 @@ function quoteData() {
   return { n, stay, total, deposit: Math.round(total * CONFIG.depositRate) };
 }
 function updateQuote() {
-  const q = quoteData(), box = $('#quote');
-  if (!q) { box.innerHTML = ''; return; }
-  box.innerHTML = `
+  const q = quoteData();
+  const html = !q ? '' : `
     <div class="qrow"><span>${t().nights(q.n)} · ${t().avg} ${eur(q.stay / q.n)}</span><span>${eur(q.stay)}</span></div>
     <div class="qrow"><span>${t().cleaning}</span><span>${eur(CONFIG.cleaningFee)}</span></div>
     <div class="qrow qtotal"><span>${t().total}</span><span>${eur(q.total)}</span></div>
-    <div class="qrow qdep"><span>${t().deposit}</span><span>${eur(q.deposit)}</span></div>`;
+    <div class="qrow qdep"><span>${FLAGS.payments ? t().deposit : t().depositLater}</span><span>${eur(q.deposit)}</span></div>`;
+  $('#quote').innerHTML = html;
+  $('#quoteSoon').innerHTML = html;
 }
 
-let lastDone = null;
 const fmtDate = d => d.toLocaleDateString(lang === 'pt' ? 'pt-PT' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 function formatDone(d) {
   return {
@@ -311,13 +369,30 @@ $('#bookForm').addEventListener('submit', e => {
   err.textContent = msg;
   if (msg) return;
 
-  // Ponto de ligação ao serviço de reservas e pagamentos (ex.: envio para o servidor,
-  // criação da referência MB WAY / Multibanco e email de confirmação automático).
-  lastDone = { name: f.name.value.trim(), checkin, checkout, guests, q: quoteData(), pay: f.pay.value };
-  $('#doneSummary').textContent = t().done(formatDone(lastDone));
+  lastDone = {
+    name: f.name.value.trim(), email: f.email.value.trim(), phone: f.phone.value.trim(), message: f.message.value.trim(),
+    checkin, checkout, guests, adults: +adults.value, children: +children.value, q: quoteData(), pay: f.pay.value,
+  };
+  if (FLAGS.payments) {
+    // Ponto de ligação ao serviço de pagamentos (criar a referência MB WAY / Multibanco
+    // ou a sessão de cartão no servidor e enviar o email de confirmação automático).
+  } else {
+    // Sem pagamento online: o pedido segue por email, escrito pelo próprio hóspede
+    location.href = mailtoFor(lastDone);
+  }
+  renderDone();
   f.hidden = true; $('#bookDone').hidden = false;
   $('#bookDone').scrollIntoView({ behavior: 'smooth', block: 'center' });
 });
+function mailtoFor(d) {
+  const x = { ...formatDone(d), email: d.email, phone: d.phone, message: d.message, adults: d.adults, children: d.children };
+  return `mailto:${clean(SITE.email)}?subject=${encodeURIComponent(t().mailSubject(x.in, x.out))}&body=${encodeURIComponent(t().mailBody(x))}`;
+}
+function renderDone() {
+  if (!lastDone) return;
+  $('#doneSummary').textContent = FLAGS.payments ? t().done(formatDone(lastDone)) : t().doneMail(formatDone(lastDone));
+  $('#mailAgain').href = mailtoFor(lastDone);
+}
 $('#bookAgain').addEventListener('click', () => {
   const f = $('#bookForm'); f.reset(); checkin = checkout = null; lastDone = null;
   syncInputs(); renderCalendar(); updateQuote(); adults.value = '2';
