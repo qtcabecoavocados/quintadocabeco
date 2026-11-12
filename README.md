@@ -1,25 +1,25 @@
-# Quinta do Cabeço — Avocado Farm
+# Quinta do Cabeço · Alojamento Local em Tavira
 
-A draft website for a holiday home set within a working avocado farm in **Tavira, Algarve**.
+Site de uma página, bilingue (PT/EN), com reserva direta. Feito pela BIANES com base no pacote **Reservas Diretas** da proposta «Website para Alojamento Local».
 
-- **Design:** Aesop / Diptyque–inspired — quiet, editorial, generous whitespace.
-- **Palette:** beige · terracotta · naval blue.
-- **Stack:** plain HTML + CSS (no build step). Fonts: Cormorant Garamond + Jost.
+- **Ficheiros:** `index.html` (conteúdo), `styles.css` (aspeto e paleta, no topo), `script.js` (idioma, galeria, calendário, orçamento, formulário).
+- **Fotografias:** `images/gallery/<categoria>/`. A lista de categorias e o número de fotografias está em `GALLERY`, no `script.js`.
+- **Preços, estadia mínima, limpeza e sinal:** objeto `CONFIG` no topo do `script.js`.
+- **Publicação:** GitHub Pages a partir de `main` / raiz → https://qtcabecoavocados.github.io/quintadocabeco/
 
-## Files
-- `index.html` — the whole single-page site.
-- `styles.css` — all styling and the colour palette (top of the file).
+## O que está incluído (pacote Reservas Diretas)
+- Galeria por divisões, com ampliação
+- Descrição, quartos e comodidades
+- Localização, mapa e pontos de interesse
+- Contacto por email e WhatsApp (incluindo botão fixo)
+- Botões para o Booking e o Airbnb
+- Português e inglês (escolhido automaticamente pelo idioma do browser)
+- Calendário de disponibilidade e pedido de reserva com datas e hóspedes
+- Orçamento automático e escolha do pagamento do sinal (MB WAY, Multibanco, cartão)
+- Termos de reserva e cancelamento, política de privacidade, n.º de RNAL e Livro de Reclamações
 
-## Publish with GitHub Pages
-1. Push this repo to GitHub (already done if you're reading this there).
-2. On GitHub go to **Settings → Pages**.
-3. Under **Build and deployment → Source**, choose **Deploy from a branch**.
-4. Select branch **main** and folder **/ (root)**, then **Save**.
-5. After a minute the site will be live at:
-   `https://qtcabecoavocados.github.io/quintadocabeco/`
-
-## Still to do (this is a draft)
-- **Photography:** the gallery and image bands use coloured placeholders — swap in real photos of the grove, house, pool, and Tavira.
-- **Contact email:** currently `hello@quintadocabeco.com` (placeholder) — update in `index.html`.
-- **Copy:** all text is a first draft, ready to be edited.
-- **Custom domain (optional):** can be added later via a `CNAME` file + Settings → Pages.
+## Por ligar / confirmar com o cliente
+- **Sincronização iCal com o Booking e o Airbnb:** o calendário usa datas ocupadas de demonstração (`CONFIG.demoBusy`).
+- **Pagamentos e email de confirmação:** o formulário mostra a confirmação mas ainda não envia nada; o ponto de ligação está assinalado no `script.js` (submissão do `#bookForm`). Precisa de um serviço de pagamentos (ex.: easypay, ifthenpay ou Stripe) e de um pequeno servidor ou função.
+- **Dados reais:** n.º de RNAL (`000000/AL`), número de WhatsApp (`351900000000`), email (`hello@quintadocabeco.com`), ligações do Booking e do Airbnb (`href="#"`), localização exata no mapa, preços por mês.
+- **Factos a confirmar:** n.º de hóspedes (8), casas de banho (3), piscina, tempos de viagem, regras da casa e política de cancelamento.

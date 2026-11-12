@@ -1,90 +1,352 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt" data-lang="pt">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quinta do Cabeço — Avocado Farm · Tavira, Algarve</title>
-  <meta name="description" content="A tranquil holiday home set within a working avocado farm in Tavira, Algarve. Beige stone, terracotta light, and the quiet of the eastern Algarve." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quinta do Cabeço · Alojamento Local em Tavira, Algarve</title>
+  <meta name="description" content="Casa de campo com quatro quartos numa quinta de abacates perto de Tavira, no Algarve. Reserve diretamente, sem intermediários.">
+  <meta property="og:title" content="Quinta do Cabeço · Tavira, Algarve">
+  <meta property="og:description" content="Casa de campo numa quinta de abacates perto de Tavira. Reserve diretamente.">
+  <meta property="og:image" content="images/gallery/pool-area/pool-area-04.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-  <header class="site-header" id="top">
-    <a class="brand" href="index.html">
-      <span class="brand-mark">Quinta do Cabeço</span>
-      <span class="brand-sub">Avocado Farm · Tavira</span>
-    </a>
-    <nav class="site-nav">
-      <a href="the-farm.html">The Farm</a>
-      <a href="the-house.html">The House</a>
-      <a href="surroundings.html">Surroundings</a>
-      <a href="gallery.html">Gallery</a>
-      <a href="enquire.html" class="nav-cta">Enquire</a>
-    </nav>
-  </header>
+<!-- ============ CABEÇALHO ============ -->
+<header class="site-header" id="top">
+  <a href="#top" class="brand" aria-label="Quinta do Cabeço">
+    <span class="brand-name">Quinta do Cabeço</span>
+    <span class="brand-sub">Tavira · Algarve</span>
+  </a>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero-inner">
-      <p class="eyebrow">Tavira · Eastern Algarve</p>
-      <h1>Quinta do Cabeço</h1>
-      <p class="hero-tagline">A quiet holiday home set within a working avocado farm,<br />where the light is warm and the days move slowly.</p>
-      <a href="enquire.html" class="btn">Enquire to Stay</a>
+  <nav class="nav" id="nav" aria-label="Principal">
+    <a href="#casa"><span data-l="pt">A casa</span><span data-l="en">The house</span></a>
+    <a href="#quartos"><span data-l="pt">Quartos</span><span data-l="en">Bedrooms</span></a>
+    <a href="#galeria"><span data-l="pt">Galeria</span><span data-l="en">Gallery</span></a>
+    <a href="#localizacao"><span data-l="pt">Localização</span><span data-l="en">Location</span></a>
+    <a href="#contacto"><span data-l="pt">Contacto</span><span data-l="en">Contact</span></a>
+  </nav>
+
+  <div class="header-actions">
+    <div class="lang" role="group" aria-label="Idioma / Language">
+      <button type="button" data-set-lang="pt" aria-pressed="true">PT</button>
+      <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
     </div>
-    <div class="hero-scroll">Scroll</div>
-  </section>
+    <a href="#reservar" class="btn btn-small"><span data-l="pt">Reservar</span><span data-l="en">Book</span></a>
+    <button class="menu-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav"><span></span><span></span></button>
+  </div>
+</header>
 
-  <!-- Intro -->
-  <section class="section intro">
-    <div class="section-grid">
-      <div class="section-lede">
-        <p class="eyebrow">Welcome</p>
-        <h2>An avocado grove between the hills and the sea</h2>
+<main>
+
+<!-- ============ ENTRADA ============ -->
+<section class="hero">
+  <img class="hero-img" src="images/gallery/pool-area/pool-area-04.jpg" alt="Alpendre com mesa de refeições e vista para o campo" fetchpriority="high">
+  <div class="hero-shade"></div>
+  <div class="hero-inner">
+    <p class="eyebrow light"><span data-l="pt">Alojamento Local · Tavira, Algarve</span><span data-l="en">Holiday home · Tavira, Algarve</span></p>
+    <h1>Quinta do Cabeço</h1>
+    <p class="hero-lead">
+      <span data-l="pt">Uma casa de campo numa quinta de abacates, entre a serra e o mar. Quatro quartos, um alpendre longo e o tempo a passar devagar.</span>
+      <span data-l="en">A country house on an avocado farm, between the hills and the sea. Four bedrooms, a long shaded terrace and days that move slowly.</span>
+    </p>
+    <div class="hero-cta">
+      <a href="#reservar" class="btn"><span data-l="pt">Ver disponibilidade</span><span data-l="en">Check availability</span></a>
+      <a href="#galeria" class="btn btn-ghost-light"><span data-l="pt">Ver fotografias</span><span data-l="en">See photos</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NÚMEROS ============ -->
+<section class="facts" aria-label="Resumo">
+  <div class="fact"><strong>8</strong><span data-l="pt">hóspedes</span><span data-l="en">guests</span></div>
+  <div class="fact"><strong>4</strong><span data-l="pt">quartos</span><span data-l="en">bedrooms</span></div>
+  <div class="fact"><strong>3</strong><span data-l="pt">casas de banho</span><span data-l="en">bathrooms</span></div>
+  <div class="fact"><strong>10′</strong><span data-l="pt">do centro de Tavira</span><span data-l="en">to Tavira town</span></div>
+</section>
+
+<!-- ============ A CASA ============ -->
+<section class="section split" id="casa">
+  <div class="split-text">
+    <p class="eyebrow"><span data-l="pt">A casa</span><span data-l="en">The house</span></p>
+    <h2><span data-l="pt">Paredes brancas, barras amarelas e luz por todo o lado</span><span data-l="en">White walls, yellow trim and light everywhere</span></h2>
+    <p data-l="pt">A Quinta do Cabeço é uma casa algarvia de traça tradicional, renovada com cuidado, no meio de uma quinta familiar de abacates nos arredores de Tavira. Por dentro, uma grande sala com cozinha aberta e tetos de madeira; por fora, um alpendre com mesa para dez pessoas virado para o montado de sobreiros e oliveiras.</p>
+    <p data-l="en">Quinta do Cabeço is a traditional Algarve house, carefully restored, set on a family avocado farm just outside Tavira. Inside, a large living room with an open kitchen and timber ceilings; outside, a shaded terrace with a table for ten looking out over cork oaks and olive trees.</p>
+    <p data-l="pt">É uma casa pensada para famílias e grupos de amigos: espaço para estar juntos, quartos tranquilos para descansar, e a praia e a cidade a poucos minutos.</p>
+    <p data-l="en">It is a house made for families and groups of friends: room to be together, quiet bedrooms to rest, and the beach and town just minutes away.</p>
+  </div>
+  <figure class="split-media">
+    <img src="images/gallery/common-area/common-area-06.jpg" alt="Sala com sofás e tapete aos quadrados" loading="lazy">
+    <img class="inset" src="images/gallery/facade/facade-02.jpg" alt="Fachada branca com barras amarelas" loading="lazy">
+  </figure>
+</section>
+
+<!-- ============ COMODIDADES ============ -->
+<section class="section amenities-wrap">
+  <div class="section-head">
+    <p class="eyebrow"><span data-l="pt">Comodidades</span><span data-l="en">Amenities</span></p>
+    <h2><span data-l="pt">Tudo o que precisa para ficar</span><span data-l="en">Everything you need to stay</span></h2>
+  </div>
+  <ul class="amenities">
+    <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 4l9 6.5V20H3z"/><path d="M9 20v-6h6v6"/></svg><span data-l="pt">Casa inteira, só para si</span><span data-l="en">The whole house to yourself</span></li>
+    <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3v18M4 12h7a3 3 0 0 0 3-3V3M18 3v18M18 3c-2 0-3 2-3 5s1 4 3 4"/></svg><span data-l="pt">Cozinha totalmente equipada</span><span data-l="en">Fully equipped kitchen</span></li>
+    <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M5 21V9l7-5 7 5v12"/><path d="M3 9h18"/></svg><span data-l="pt">Alpendre com mesa para 10</span><span data-l="en">Shaded terrace, table for 10</span></li>
+    <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 17c2 0 2-1.5 4-1.5S8 17 10 17s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5M2 21c2 0 2-1.5 4-1.5S8 21 10 21s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5M8 13V5a2 2 0 0 1 4 0M16 13V5"/></svg><span data-l="pt">Piscina</span><span data-l="en">Swimming pool</span></li>
+    <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M5 7l14 10M19 7 5 17"/></svg><span data-l="pt">Ar condicionado em todas as divisões</span><span data-l="en">Air conditioning throughout</span></li>
+    <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9a15 15 0 0 1 20 0M5.5 12.5a10 10 0 0 1 13 0M9 16a5 5 0 0 1 6 0"/><circle cx="12" cy="19.5" r="1"/></svg><span data-l="pt">Wi-Fi gratuito</span><span data-l="en">Free Wi-Fi</span></li>
+    <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6h.01M11 6h.01"/></svg><span data-l="pt">Lavandaria com máquina de lavar</span><span data-l="en">Laundry with washing machine</span></li>
+    <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 17h14M6 17l1.5-6h9L18 17M8 11l1-4h6l1 4"/><circle cx="8" cy="19" r="1.5"/><circle cx="16" cy="19" r="1.5"/></svg><span data-l="pt">Estacionamento gratuito na quinta</span><span data-l="en">Free parking on the farm</span></li>
+    <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="20" height="13" rx="1"/><path d="M8 21h8"/></svg><span data-l="pt">Televisão na sala</span><span data-l="en">TV in the living room</span></li>
+    <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21c-4-3-7-6.5-7-10.5a7 7 0 0 1 14 0C19 14.5 16 18 12 21z"/><ellipse cx="12" cy="11" rx="2.5" ry="3.5"/></svg><span data-l="pt">Abacates da quinta, na época</span><span data-l="en">Farm avocados, in season</span></li>
+    <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg><span data-l="pt">Roupa de cama e toalhas incluídas</span><span data-l="en">Bed linen and towels included</span></li>
+    <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span data-l="pt">Entrada a partir das 16h, saída até às 11h</span><span data-l="en">Check-in from 4 pm, check-out by 11 am</span></li>
+  </ul>
+</section>
+
+<!-- ============ QUARTOS ============ -->
+<section class="section" id="quartos">
+  <div class="section-head">
+    <p class="eyebrow"><span data-l="pt">Quartos</span><span data-l="en">Bedrooms</span></p>
+    <h2><span data-l="pt">Quatro quartos para descansar a sério</span><span data-l="en">Four bedrooms for a proper rest</span></h2>
+  </div>
+  <div class="rooms">
+    <article class="room">
+      <img src="images/gallery/room-1/room-1-03.jpg" alt="Quarto 1 com cama de casal" loading="lazy">
+      <div class="room-body">
+        <span class="room-n">01</span>
+        <h3><span data-l="pt">Quarto 1</span><span data-l="en">Bedroom 1</span></h3>
+        <p><span data-l="pt">Cama de casal · roupeiro · ar condicionado</span><span data-l="en">Double bed · wardrobe · air conditioning</span></p>
       </div>
-      <div class="section-body">
-        <p>Tucked into the gentle folds of the countryside above Tavira, Quinta do Cabeço is a family farm where rows of avocado trees give way to open sky and the scent of citrus. Here, mornings begin with birdsong and the soft green of the grove, and evenings end under a wide, unhurried sunset.</p>
-        <p>The home has been kept simple and honest — natural materials, whitewashed walls, and terracotta underfoot — a place to breathe out and let the Algarve set the pace.</p>
+    </article>
+    <article class="room">
+      <img src="images/gallery/room-2/room-2-01.jpg" alt="Quarto 2 com cama de casal e janela para o campo" loading="lazy">
+      <div class="room-body">
+        <span class="room-n">02</span>
+        <h3><span data-l="pt">Quarto 2</span><span data-l="en">Bedroom 2</span></h3>
+        <p><span data-l="pt">Cama de casal · vista para o campo · ar condicionado</span><span data-l="en">Double bed · countryside view · air conditioning</span></p>
+      </div>
+    </article>
+    <article class="room">
+      <img src="images/gallery/room-3/room-3-01.jpg" alt="Quarto 3 com cama de casal" loading="lazy">
+      <div class="room-body">
+        <span class="room-n">03</span>
+        <h3><span data-l="pt">Quarto 3</span><span data-l="en">Bedroom 3</span></h3>
+        <p><span data-l="pt">Cama de casal · ar condicionado</span><span data-l="en">Double bed · air conditioning</span></p>
+      </div>
+    </article>
+    <article class="room">
+      <img src="images/gallery/room-4/room-4-02.jpg" alt="Quarto 4 com duas camas individuais" loading="lazy">
+      <div class="room-body">
+        <span class="room-n">04</span>
+        <h3><span data-l="pt">Quarto 4</span><span data-l="en">Bedroom 4</span></h3>
+        <p><span data-l="pt">Duas camas individuais · porta para o exterior</span><span data-l="en">Two single beds · door to the garden</span></p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ============ FAIXA DE IMAGEM ============ -->
+<section class="band">
+  <img src="images/gallery/pool-area/pool-area-01.jpg" alt="Mesa no alpendre com vista para sobreiros e oliveiras" loading="lazy">
+  <blockquote>
+    <p data-l="pt">«Almoços longos à sombra, tardes sem relógio e jantares que se estendem até às estrelas.»</p>
+    <p data-l="en">“Long lunches in the shade, afternoons without a clock and dinners that last until the stars come out.”</p>
+  </blockquote>
+</section>
+
+<!-- ============ GALERIA ============ -->
+<section class="section" id="galeria">
+  <div class="section-head">
+    <p class="eyebrow"><span data-l="pt">Galeria</span><span data-l="en">Gallery</span></p>
+    <h2><span data-l="pt">Veja a casa por dentro e por fora</span><span data-l="en">See the house inside and out</span></h2>
+  </div>
+  <div class="gtabs" role="tablist" id="gtabs"></div>
+  <div class="ggrid" id="ggrid"></div>
+</section>
+
+<!-- ============ LOCALIZAÇÃO ============ -->
+<section class="section split split-rev" id="localizacao">
+  <div class="split-text">
+    <p class="eyebrow"><span data-l="pt">Localização</span><span data-l="en">Location</span></p>
+    <h2><span data-l="pt">Sossego do campo, com Tavira e a ria ao lado</span><span data-l="en">Country calm, with Tavira and the lagoon next door</span></h2>
+    <p data-l="pt">A quinta fica nos arredores de Tavira, uma das cidades mais bonitas do Algarve, com a sua ponte romana, igrejas e esplanadas junto ao rio Gilão. Daqui chega-se depressa às ilhas da Ria Formosa e às praias de areia branca.</p>
+    <p data-l="en">The farm sits just outside Tavira, one of the Algarve's most graceful towns, with its Roman bridge, churches and riverside cafés along the Gilão. The Ria Formosa islands and their white-sand beaches are a short drive away.</p>
+    <ul class="poi">
+      <li><span data-l="pt">Centro histórico de Tavira</span><span data-l="en">Tavira old town</span><em>~10 min</em></li>
+      <li><span data-l="pt">Ilha de Tavira (barco)</span><span data-l="en">Tavira Island (ferry)</span><em>~15 min</em></li>
+      <li><span data-l="pt">Praia do Barril</span><span data-l="en">Barril Beach</span><em>~20 min</em></li>
+      <li><span data-l="pt">Cacela Velha</span><span data-l="en">Cacela Velha</span><em>~20 min</em></li>
+      <li><span data-l="pt">Fronteira com Espanha</span><span data-l="en">Spanish border</span><em>~25 min</em></li>
+      <li><span data-l="pt">Aeroporto de Faro</span><span data-l="en">Faro Airport</span><em>~35 min</em></li>
+    </ul>
+    <p class="note"><span data-l="pt">Tempos aproximados de carro.</span><span data-l="en">Approximate driving times.</span></p>
+  </div>
+  <div class="map">
+    <iframe title="Mapa de Tavira" src="https://www.google.com/maps?q=Tavira,+Portugal&amp;z=12&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </div>
+</section>
+
+<!-- ============ RESERVAR ============ -->
+<section class="section book" id="reservar">
+  <div class="section-head">
+    <p class="eyebrow"><span data-l="pt">Reserva direta</span><span data-l="en">Book direct</span></p>
+    <h2><span data-l="pt">Escolha as datas e reserve sem intermediários</span><span data-l="en">Pick your dates and book without middlemen</span></h2>
+    <p class="lead"><span data-l="pt">Ao reservar aqui fala diretamente connosco e tem o melhor preço disponível. O calendário está sincronizado com o Booking e o Airbnb.</span><span data-l="en">Booking here means you deal with us directly and get the best available rate. The calendar is kept in sync with Booking.com and Airbnb.</span></p>
+  </div>
+
+  <div class="book-grid">
+    <div class="cal-card">
+      <div class="cal-head">
+        <button type="button" class="cal-nav" id="calPrev" aria-label="Mês anterior">‹</button>
+        <div class="cal-title" id="calTitle"></div>
+        <button type="button" class="cal-nav" id="calNext" aria-label="Mês seguinte">›</button>
+      </div>
+      <div class="cal" id="cal"></div>
+      <div class="cal-legend">
+        <span><i class="lg lg-free"></i><span data-l="pt">Livre</span><span data-l="en">Available</span></span>
+        <span><i class="lg lg-busy"></i><span data-l="pt">Ocupado</span><span data-l="en">Booked</span></span>
+        <span><i class="lg lg-sel"></i><span data-l="pt">A sua estadia</span><span data-l="en">Your stay</span></span>
+      </div>
+      <p class="note"><span data-l="pt">Estadia mínima de 3 noites. Escolha o dia de chegada e depois o de saída.</span><span data-l="en">Minimum stay 3 nights. Pick your arrival day, then your departure day.</span></p>
+    </div>
+
+    <div class="book-side">
+      <form class="book-form" id="bookForm" novalidate>
+        <div class="row2">
+          <label><span data-l="pt">Chegada</span><span data-l="en">Arrival</span>
+            <input type="date" name="checkin" id="checkin" required></label>
+          <label><span data-l="pt">Saída</span><span data-l="en">Departure</span>
+            <input type="date" name="checkout" id="checkout" required></label>
+        </div>
+        <div class="row2">
+          <label><span data-l="pt">Adultos</span><span data-l="en">Adults</span>
+            <select name="adults" id="adults"></select></label>
+          <label><span data-l="pt">Crianças</span><span data-l="en">Children</span>
+            <select name="children" id="children"></select></label>
+        </div>
+        <label><span data-l="pt">Nome</span><span data-l="en">Name</span>
+          <input type="text" name="name" autocomplete="name" required></label>
+        <div class="row2">
+          <label>Email
+            <input type="email" name="email" autocomplete="email" required></label>
+          <label><span data-l="pt">Telemóvel</span><span data-l="en">Phone</span>
+            <input type="tel" name="phone" autocomplete="tel"></label>
+        </div>
+        <label><span data-l="pt">Mensagem (opcional)</span><span data-l="en">Message (optional)</span>
+          <textarea name="message" rows="3"></textarea></label>
+
+        <div class="quote" id="quote" aria-live="polite"></div>
+
+        <fieldset class="pay">
+          <legend><span data-l="pt">Pagamento do sinal</span><span data-l="en">Deposit payment</span></legend>
+          <label class="pay-opt"><input type="radio" name="pay" value="MB WAY" checked><span>MB WAY</span></label>
+          <label class="pay-opt"><input type="radio" name="pay" value="Multibanco"><span>Multibanco</span></label>
+          <label class="pay-opt"><input type="radio" name="pay" value="card"><span><span data-l="pt">Cartão</span><span data-l="en">Card</span></span></label>
+        </fieldset>
+
+        <label class="check"><input type="checkbox" name="terms" required>
+          <span data-l="pt">Li e aceito os <a href="#termos">termos de reserva e cancelamento</a> e a <a href="#privacidade">política de privacidade</a>.</span>
+          <span data-l="en">I have read and accept the <a href="#termos">booking and cancellation terms</a> and the <a href="#privacidade">privacy policy</a>.</span>
+        </label>
+
+        <p class="form-error" id="formError" role="alert"></p>
+        <button type="submit" class="btn btn-block"><span data-l="pt">Pedir reserva</span><span data-l="en">Request booking</span></button>
+
+        <p class="or"><span data-l="pt">Prefere reservar numa plataforma?</span><span data-l="en">Prefer to book on a platform?</span></p>
+        <div class="platforms">
+          <a href="#" class="btn btn-line" target="_blank" rel="noopener">Booking.com</a>
+          <a href="#" class="btn btn-line" target="_blank" rel="noopener">Airbnb</a>
+        </div>
+      </form>
+
+      <div class="book-done" id="bookDone" hidden>
+        <h3><span data-l="pt">Pedido recebido. Obrigado!</span><span data-l="en">Request received. Thank you!</span></h3>
+        <p id="doneSummary"></p>
+        <p><span data-l="pt">Vai receber um email de confirmação com as instruções para pagar o sinal. A reserva fica confirmada assim que o pagamento for recebido.</span><span data-l="en">You will receive a confirmation email with instructions to pay the deposit. Your booking is confirmed as soon as the payment is received.</span></p>
+        <button type="button" class="btn btn-line" id="bookAgain"><span data-l="pt">Fazer outro pedido</span><span data-l="en">Make another request</span></button>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Explore cards -->
-  <section class="explore">
-    <a class="explore-card" href="the-farm.html">
-      <p class="eyebrow">01</p>
-      <h3>The Farm</h3>
-      <p>A working avocado grove where the days move slowly.</p>
-      <span class="go">Discover →</span>
-    </a>
-    <a class="explore-card" href="the-house.html">
-      <p class="eyebrow">02</p>
-      <h3>The House</h3>
-      <p>Light-filled rooms, shaded terraces, and a pool.</p>
-      <span class="go">Discover →</span>
-    </a>
-    <a class="explore-card" href="surroundings.html">
-      <p class="eyebrow">03</p>
-      <h3>Surroundings</h3>
-      <p>Tavira, its river, and the island beaches beyond.</p>
-      <span class="go">Discover →</span>
-    </a>
-    <a class="explore-card" href="gallery.html">
-      <p class="eyebrow">04</p>
-      <h3>Gallery</h3>
-      <p>A first look at the grove, the house, and the town.</p>
-      <span class="go">Discover →</span>
-    </a>
-  </section>
+<!-- ============ TERMOS E PRIVACIDADE ============ -->
+<section class="section legal" id="termos">
+  <div class="section-head">
+    <p class="eyebrow"><span data-l="pt">Informação útil</span><span data-l="en">Good to know</span></p>
+    <h2><span data-l="pt">Termos de reserva e cancelamento</span><span data-l="en">Booking and cancellation terms</span></h2>
+  </div>
+  <div class="accordion">
+    <details open>
+      <summary><span data-l="pt">Pagamento</span><span data-l="en">Payment</span></summary>
+      <p data-l="pt">Para confirmar a reserva é pedido um sinal de 30% do valor total, por MB WAY, Multibanco ou cartão. O restante é pago até 14 dias antes da chegada.</p>
+      <p data-l="en">A 30% deposit is required to confirm your booking, by MB WAY, Multibanco or card. The balance is due 14 days before arrival.</p>
+    </details>
+    <details>
+      <summary><span data-l="pt">Cancelamento</span><span data-l="en">Cancellation</span></summary>
+      <p data-l="pt">Cancelamento gratuito até 30 dias antes da chegada, com devolução total do sinal. Entre 30 e 14 dias antes, é devolvido 50% do sinal. A menos de 14 dias da chegada, o valor pago não é reembolsável.</p>
+      <p data-l="en">Free cancellation up to 30 days before arrival, with a full refund of the deposit. Between 30 and 14 days before, 50% of the deposit is refunded. Within 14 days of arrival, payments are non-refundable.</p>
+    </details>
+    <details>
+      <summary><span data-l="pt">Entrada, saída e regras da casa</span><span data-l="en">Check-in, check-out and house rules</span></summary>
+      <p data-l="pt">Entrada a partir das 16h e saída até às 11h. Não são permitidas festas nem eventos. Não é permitido fumar dentro de casa. Animais de estimação sob consulta.</p>
+      <p data-l="en">Check-in from 4 pm and check-out by 11 am. No parties or events. No smoking indoors. Pets on request.</p>
+    </details>
+    <details>
+      <summary><span data-l="pt">Taxa turística</span><span data-l="en">Tourist tax</span></summary>
+      <p data-l="pt">A taxa municipal turística de Tavira, quando aplicável, é cobrada à chegada, de acordo com o regulamento em vigor.</p>
+      <p data-l="en">Tavira's municipal tourist tax, where applicable, is charged on arrival according to current regulations.</p>
+    </details>
+    <details id="privacidade">
+      <summary><span data-l="pt">Política de privacidade (RGPD)</span><span data-l="en">Privacy policy (GDPR)</span></summary>
+      <p data-l="pt">Os dados que nos envia (nome, contactos e datas) são usados apenas para tratar o seu pedido e a sua estadia, e para cumprir obrigações legais, como a comunicação de hóspedes estrangeiros às autoridades. Não são partilhados com terceiros para fins comerciais. Pode pedir a consulta, correção ou eliminação dos seus dados a qualquer momento, através do nosso email.</p>
+      <p data-l="en">The data you send us (name, contact details and dates) is used only to handle your request and stay, and to meet legal obligations such as reporting foreign guests to the authorities. It is never shared with third parties for marketing. You can ask to access, correct or delete your data at any time by email.</p>
+    </details>
+  </div>
+</section>
 
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <span class="brand-mark">Quinta do Cabeço</span>
-      <span class="footer-copy">© 2026 Quinta do Cabeço — Avocado Farm. All rights reserved.</span>
-    </div>
-  </footer>
+<!-- ============ CONTACTO ============ -->
+<section class="contact" id="contacto">
+  <p class="eyebrow light"><span data-l="pt">Contacto</span><span data-l="en">Contact</span></p>
+  <h2><span data-l="pt">Tem alguma pergunta? Fale connosco.</span><span data-l="en">Any questions? Get in touch.</span></h2>
+  <div class="contact-actions">
+    <a class="btn" href="https://wa.me/351900000000" target="_blank" rel="noopener">WhatsApp</a>
+    <a class="btn btn-ghost-light" href="mailto:hello@quintadocabeco.com">hello@quintadocabeco.com</a>
+  </div>
+  <p class="contact-addr">Quinta do Cabeço · Tavira · Algarve · Portugal</p>
+</section>
 
+</main>
+
+<!-- ============ RODAPÉ ============ -->
+<footer class="site-footer">
+  <div class="foot-brand">Quinta do Cabeço</div>
+  <div class="foot-legal">
+    <p><span data-l="pt">Alojamento Local registado com o n.º</span><span data-l="en">Registered holiday rental (Alojamento Local) no.</span> <strong>000000/AL</strong></p>
+    <p>
+      <a href="https://www.livroreclamacoes.pt" target="_blank" rel="noopener"><span data-l="pt">Livro de Reclamações Eletrónico</span><span data-l="en">Complaints Book (Livro de Reclamações)</span></a>
+      · <a href="#termos"><span data-l="pt">Termos</span><span data-l="en">Terms</span></a>
+      · <a href="#privacidade"><span data-l="pt">Privacidade</span><span data-l="en">Privacy</span></a>
+    </p>
+    <p class="copy">© 2026 Quinta do Cabeço</p>
+  </div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/351900000000" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.4-.3z"/></svg>
+</a>
+
+<!-- Ampliação de fotografias -->
+<div class="lightbox" id="lightbox" hidden>
+  <button type="button" class="lb-close" aria-label="Fechar">×</button>
+  <button type="button" class="lb-prev" aria-label="Anterior">‹</button>
+  <img alt="">
+  <button type="button" class="lb-next" aria-label="Seguinte">›</button>
+  <p class="lb-count"></p>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
