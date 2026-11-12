@@ -2,25 +2,57 @@
 <html lang="pt" data-lang="pt">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Quinta do Cabeço · Alojamento Local em Tavira, Algarve</title>
   <meta name="description" content="Casa de campo com quatro quartos numa quinta de abacates perto de Tavira, no Algarve. Reserve diretamente, sem intermediários.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Quinta do Cabeço">
   <meta property="og:title" content="Quinta do Cabeço · Tavira, Algarve">
   <meta property="og:description" content="Casa de campo numa quinta de abacates perto de Tavira. Reserve diretamente.">
-  <meta property="og:image" content="images/gallery/pool-area/pool-area-04.jpg">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232C3D2E'/%3E%3Cellipse cx='32' cy='35' rx='15' ry='20' fill='%23E3B23C'/%3E%3Ccircle cx='32' cy='40' r='7' fill='%23B5673F'/%3E%3C/svg%3E">
+  <meta property="og:url" content="https://qtcabecoavocados.github.io/quintadocabeco/">
+  <meta property="og:image" content="https://qtcabecoavocados.github.io/quintadocabeco/images/gallery/pool-area/pool-area-04.jpg">
+
+  <!-- Ícones e modo app (Partilhar → Adicionar ao ecrã principal) -->
+  <link rel="icon" href="images/brand/favicon.svg?v=4" type="image/svg+xml">
+  <link rel="icon" href="images/brand/favicon-32.png?v=4" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="images/brand/apple-touch-icon.png?v=4">
+  <link rel="manifest" href="manifest.webmanifest?v=4">
+  <meta name="theme-color" content="#2C3D2E">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Q. do Cabeço">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=3">
+  <link rel="stylesheet" href="styles.css?v=4">
 </head>
 <body>
+
+<!-- Símbolo: arco de porta algarvia, o cabeço e meio abacate (ver images/brand/) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="qdc-mark" viewBox="0 0 120 150">
+    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 146V62a48 48 0 0 1 96 0v84" stroke-width="3.4"/>
+      <path d="M19 146V63a41 41 0 0 1 82 0v83" stroke-width="1.6"/>
+      <path d="M6 146h108" stroke-width="3.4"/>
+      <path d="M19 128c14-15 30-20 41-20s27 5 41 20" stroke-width="2.4"/>
+      <path d="M60 40C52 40 48 48 47 58c-1 8-7 14-8 26-1 14 9 24 21 24s22-10 21-24c-1-12-7-18-8-26-1-10-5-18-13-18z" stroke-width="2.4"/>
+      <path d="M60 40C52 40 48 48 47 58c-1 8-7 14-8 26-1 14 9 24 21 24s22-10 21-24c-1-12-7-18-8-26-1-10-5-18-13-18z" transform="translate(60 88) scale(.8) translate(-60 -88)" stroke-width="1.4"/>
+    </g>
+    <circle cx="60" cy="88" r="10.5" fill="#E3B23C"/>
+  </symbol>
+</svg>
 
 <!-- ============ CABEÇALHO ============ -->
 <header class="site-header" id="top">
   <a href="#top" class="brand" aria-label="Quinta do Cabeço">
-    <span class="brand-name">Quinta do Cabeço</span>
-    <span class="brand-sub">Tavira · Algarve</span>
+    <svg class="brand-mark" viewBox="0 0 120 150" aria-hidden="true"><use href="#qdc-mark"/></svg>
+    <span class="brand-text">
+      <span class="brand-name">Quinta do Cabeço</span>
+      <span class="brand-sub">Tavira · Algarve</span>
+    </span>
   </a>
 
   <nav class="nav" id="nav" aria-label="Principal">
@@ -343,7 +375,7 @@
 
 <!-- ============ RODAPÉ ============ -->
 <footer class="site-footer">
-  <div class="foot-brand">Quinta do Cabeço</div>
+  <div class="foot-brand"><svg class="foot-mark" viewBox="0 0 120 150" aria-hidden="true"><use href="#qdc-mark"/></svg><span>Quinta do Cabeço</span></div>
   <div class="foot-legal">
     <p data-needs="rnal" hidden><span data-l="pt">Alojamento Local registado com o n.º</span><span data-l="en">Registered holiday rental (Alojamento Local) no.</span> <strong data-text="rnal"></strong></p>
     <p>
@@ -368,6 +400,6 @@
   <p class="lb-count"></p>
 </div>
 
-<script src="script.js?v=3"></script>
+<script src="script.js?v=4"></script>
 </body>
 </html>

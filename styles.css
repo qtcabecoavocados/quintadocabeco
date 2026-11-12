@@ -90,9 +90,14 @@ html[data-lang="en"] [data-l="pt"] { display: none !important; }
 .section-head { max-width: 46rem; margin-bottom: 3rem; }
 
 /* ---------- cabeçalho ---------- */
+/* Modo app no iPhone: a barra de estado fica por cima do site (safe-area) */
+:root { --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px); }
+html { scroll-padding-top: calc(var(--header-h) + var(--safe-top)); }
+
 .site-header {
   position: fixed; inset: 0 0 auto 0; z-index: 50;
-  height: var(--header-h);
+  height: calc(var(--header-h) + var(--safe-top));
+  padding-top: var(--safe-top) !important;
   display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
   padding: 0 var(--gutter);
   color: var(--paper);
@@ -104,7 +109,9 @@ html[data-lang="en"] [data-l="pt"] { display: none !important; }
   box-shadow: 0 1px 0 var(--sand);
   backdrop-filter: blur(8px);
 }
-.brand { text-decoration: none; display: flex; flex-direction: column; line-height: 1.1; }
+.brand { text-decoration: none; display: flex; align-items: center; gap: .7rem; line-height: 1.1; }
+.brand-mark { width: 30px; height: 38px; flex: 0 0 auto; }
+.brand-text { display: flex; flex-direction: column; }
 .brand-name { font-family: var(--serif); font-size: 1.45rem; }
 .brand-sub { font-size: .62rem; letter-spacing: .3em; text-transform: uppercase; opacity: .8; }
 .nav { display: flex; gap: 2rem; }
@@ -298,7 +305,8 @@ html[data-lang="pt"] .month-title { text-transform: capitalize; }
 
 /* ---------- rodapé ---------- */
 .site-footer { background: #233125; color: var(--sand); padding: 2.5rem var(--gutter) 5.5rem; display: flex; justify-content: space-between; align-items: flex-start; gap: 2rem; flex-wrap: wrap; font-size: .85rem; }
-.foot-brand { font-family: var(--serif); font-size: 1.6rem; color: var(--paper); }
+.foot-brand { font-family: var(--serif); font-size: 1.6rem; color: var(--paper); display: flex; align-items: center; gap: .9rem; }
+.foot-mark { width: 40px; height: 50px; }
 .foot-legal { text-align: right; }
 .foot-legal p { margin: 0 0 .4rem; }
 .foot-legal strong { color: var(--paper); font-weight: 400; }
@@ -308,7 +316,7 @@ html[data-lang="pt"] .month-title { text-transform: capitalize; }
 
 /* ---------- WhatsApp ---------- */
 .wa-float {
-  position: fixed; right: 1.2rem; bottom: 1.2rem; z-index: 40;
+  position: fixed; right: 1.2rem; bottom: calc(1.2rem + var(--safe-bottom)); z-index: 40;
   width: 54px; height: 54px; border-radius: 50%;
   background: #25D366; display: flex; align-items: center; justify-content: center;
   box-shadow: 0 6px 20px rgba(0,0,0,.18); transition: transform .2s;
@@ -336,7 +344,7 @@ html[data-lang="pt"] .month-title { text-transform: capitalize; }
 @media (max-width: 900px) {
   .menu-toggle { display: block; }
   .nav {
-    position: fixed; inset: var(--header-h) 0 auto 0;
+    position: fixed; inset: calc(var(--header-h) + var(--safe-top)) 0 auto 0;
     flex-direction: column; gap: 0;
     background: var(--beige); color: var(--forest);
     padding: .5rem var(--gutter) 1.5rem;

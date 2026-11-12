@@ -59,3 +59,15 @@ No topo do `script.js`, no objeto `SITE`, preencher o n.º de RNAL, o email, o W
 - **Pagamento online e email de confirmação automático:** por ligar (sugestão: easypay, que faz MB WAY, Multibanco e cartão). O ponto de ligação está assinalado no `script.js` (submissão do `#bookForm`); depois basta pôr `payments: true` em `SITE`.
 - **Dados reais:** preencher `SITE` (ver acima), a localização exata no mapa e os preços por mês (`CONFIG.nightly`).
 - **Factos a confirmar:** n.º de hóspedes (8), casas de banho (3), piscina, tempos de viagem, regras da casa e política de cancelamento.
+
+## Logótipo e ícone de app
+O símbolo junta o arco de uma porta algarvia, o cabeço (a pequena colina que dá nome à quinta) e meio abacate, com o caroço no amarelo das barras da fachada. Os ficheiros estão em `images/brand/`:
+- `logo.png` (fundo transparente) e `logo-dark.png` (fundo verde): assinatura completa, para documentos, redes sociais e sinalética;
+- `logo-mark.svg`, `logo-mark-light.svg`, `logo-mark-bold.svg`: só o símbolo (o «bold» é para tamanhos muito pequenos);
+- `apple-touch-icon.png`, `icon-*.png`, `favicon.*`, `app-icon-1024.png`: ícones.
+
+Para os gerar de novo depois de alterar o desenho: `python scripts/build-brand.py` (precisa do Chrome).
+
+### Pôr no ecrã principal do telemóvel, como uma app
+- **iPhone (Safari):** abrir o site → botão **Partilhar** → **Adicionar ao ecrã principal** → **Adicionar**. Abre em ecrã inteiro, sem a barra do Safari, com o nome «Q. do Cabeço».
+- **Android (Chrome):** menu ⋮ → **Adicionar ao ecrã principal** (ou **Instalar app**).
