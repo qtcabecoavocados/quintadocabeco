@@ -17,7 +17,7 @@ const SITE = {
   // do Booking, do Airbnb e das reservas diretas, e os pedidos do formulário entram lá.
   alpendre: {
     api: 'https://alpendre.houseguests.workers.dev',
-    key: '',         // ex.: 'pk_0123456789abcdef01234567'
+    key: 'pk_597b87235e444e064a75aa10',
   },
 };
 
