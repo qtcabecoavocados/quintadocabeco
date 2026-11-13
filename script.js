@@ -414,7 +414,7 @@ $('#bookForm').addEventListener('submit', async e => {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           checkIn: iso(checkin), checkOut: iso(checkout), guestName: lastDone.name, email: lastDone.email,
-          phone: lastDone.phone, guests, message: lastDone.message, total: lastDone.q.total,
+          phone: lastDone.phone, guests, message: lastDone.message, total: lastDone.q.total, lang,
           details: { Adults: lastDone.adults, Children: lastDone.children, 'Deposit (30%)': lastDone.q.deposit,
             'Deposit method': lastDone.pay === 'card' ? 'card' : lastDone.pay, Language: lang === 'pt' ? 'Portuguese' : 'English' },
         }),
