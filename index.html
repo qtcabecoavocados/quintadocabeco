@@ -26,7 +26,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=4">
+  <link rel="stylesheet" href="styles.css?v=5">
 </head>
 <body>
 
@@ -249,7 +249,7 @@
     </div>
 
     <div class="book-side">
-      <div class="book-soon" data-needs-none="email" hidden>
+      <div class="book-soon" data-needs-none="email alpendre" hidden>
         <h3><span data-l="pt">Reservas diretas brevemente</span><span data-l="en">Direct booking coming soon</span></h3>
         <p><span data-l="pt">Já pode ver as datas e o valor da estadia. Os pedidos de reserva pelo site vão estar disponíveis muito em breve.</span><span data-l="en">You can already check dates and the price of your stay. Booking requests through the website will be available very soon.</span></p>
         <div class="quote" id="quoteSoon" aria-live="polite"></div>
@@ -262,7 +262,7 @@
         </div>
       </div>
 
-      <form class="book-form" id="bookForm" data-needs="email" novalidate hidden>
+      <form class="book-form" id="bookForm" data-needs-any="email alpendre" novalidate hidden>
         <div class="row2">
           <label><span data-l="pt">Chegada</span><span data-l="en">Arrival</span>
             <input type="date" name="checkin" id="checkin" required></label>
@@ -313,12 +313,13 @@
       </form>
 
       <div class="book-done" id="bookDone" hidden>
-        <h3 data-needs="payments" hidden><span data-l="pt">Pedido recebido. Obrigado!</span><span data-l="en">Request received. Thank you!</span></h3>
-        <h3 data-needs-none="payments" hidden><span data-l="pt">Falta só enviar o email</span><span data-l="en">Just send the email</span></h3>
+        <h3 data-needs-any="payments alpendre" hidden><span data-l="pt">Pedido recebido. Obrigado!</span><span data-l="en">Request received. Thank you!</span></h3>
+        <h3 data-needs-none="payments alpendre" hidden><span data-l="pt">Falta só enviar o email</span><span data-l="en">Just send the email</span></h3>
         <p id="doneSummary"></p>
         <p data-needs="payments" hidden><span data-l="pt">Vai receber um email de confirmação com as instruções para pagar o sinal. A reserva fica confirmada assim que o pagamento for recebido.</span><span data-l="en">You will receive a confirmation email with instructions to pay the deposit. Your booking is confirmed as soon as the payment is received.</span></p>
-        <p data-needs-none="payments" hidden><span data-l="pt">Abrimos o seu programa de email com o pedido já escrito. Envie-o e respondemos a confirmar as datas e a explicar como pagar o sinal. A reserva só fica confirmada depois da nossa resposta.</span><span data-l="en">We have opened your email app with the request already written. Send it and we will reply to confirm the dates and explain how to pay the deposit. Your booking is only confirmed after our reply.</span></p>
-        <p data-needs-none="payments" hidden><a href="#" id="mailAgain"><span data-l="pt">O email não abriu? Clique aqui.</span><span data-l="en">Email didn't open? Click here.</span></a></p>
+        <p data-needs="alpendre" data-needs-none="payments" hidden><span data-l="pt">Vamos confirmar a disponibilidade e responder por email com as instruções para pagar o sinal. A reserva só fica confirmada depois da nossa resposta.</span><span data-l="en">We will check availability and reply by email with instructions to pay the deposit. Your booking is only confirmed after our reply.</span></p>
+        <p data-needs-none="payments alpendre" hidden><span data-l="pt">Abrimos o seu programa de email com o pedido já escrito. Envie-o e respondemos a confirmar as datas e a explicar como pagar o sinal. A reserva só fica confirmada depois da nossa resposta.</span><span data-l="en">We have opened your email app with the request already written. Send it and we will reply to confirm the dates and explain how to pay the deposit. Your booking is only confirmed after our reply.</span></p>
+        <p data-needs-none="payments alpendre" hidden><a href="#" id="mailAgain"><span data-l="pt">O email não abriu? Clique aqui.</span><span data-l="en">Email didn't open? Click here.</span></a></p>
         <button type="button" class="btn btn-line" id="bookAgain"><span data-l="pt">Fazer outro pedido</span><span data-l="en">Make another request</span></button>
       </div>
     </div>
@@ -400,6 +401,6 @@
   <p class="lb-count"></p>
 </div>
 
-<script src="script.js?v=4"></script>
+<script src="script.js?v=5"></script>
 </body>
 </html>

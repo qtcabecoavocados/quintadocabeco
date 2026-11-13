@@ -18,7 +18,17 @@ Site de uma página, bilingue (PT/EN), com reserva direta. Feito pela BIANES com
 - Orçamento automático e escolha do pagamento do sinal (MB WAY, Multibanco, cartão)
 - Termos de reserva e cancelamento, política de privacidade, n.º de RNAL e Livro de Reclamações
 
-## Sincronização com o Booking e o Airbnb
+## Ligação ao Alpendre (reservas e calendários)
+O site está ligado ao **Alpendre** (https://inesdias028.github.io/alpendre/), a plataforma onde se gerem as reservas da casa:
+- o calendário do site mostra a disponibilidade do Alpendre, que junta o Booking, o Airbnb e as reservas diretas;
+- cada pedido feito no formulário entra no Alpendre como **reserva pendente**, com o preço do orçamento mostrado ao hóspede, os adultos/crianças e o método do sinal. Confirma-se ou recusa-se lá, e responde-se ao hóspede por email;
+- o formulário funciona mesmo sem email preenchido em `SITE`.
+
+Para ligar: no Alpendre, abrir a casa → **Ligações** → **Website** → **API**, copiar a chave pública (`pk_…`) e colá-la em `SITE.alpendre.key`, no `script.js`. Sem chave, o site funciona como antes (pedido por email e ficheiros `data/`).
+
+Com o Alpendre ligado, o Booking e o Airbnb ligam-se **no Alpendre** (Ligações da casa), e não pelos segredos do GitHub descritos abaixo. Na casa do Alpendre, a estadia mínima e o n.º máximo de hóspedes devem ser os mesmos do `CONFIG` (3 noites, 8 hóspedes).
+
+## Sincronização com o Booking e o Airbnb (sem Alpendre)
 A tarefa automática `.github/workflows/sync-calendars.yml` corre a cada 30 minutos (o GitHub pode atrasar alguns minutos) e:
 1. **Importa** os calendários iCal do Booking e do Airbnb e grava os dias ocupados em `data/availability.json`, que o site lê.
 2. **Exporta** as reservas diretas para `calendar.ics`, para o Booking e o Airbnb bloquearem essas datas.

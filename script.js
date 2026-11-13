@@ -12,6 +12,13 @@ const SITE = {
   bookingUrl: '',    // página do alojamento no Booking.com
   airbnbUrl: '',     // página do anúncio no Airbnb
   payments: false,   // true quando o pagamento online estiver ligado
+  // Alpendre: plataforma onde se gerem as reservas. Com a chave pública da casa
+  // (Alpendre → casa → Ligações → Website → API), o calendário mostra a disponibilidade
+  // do Booking, do Airbnb e das reservas diretas, e os pedidos do formulário entram lá.
+  alpendre: {
+    api: 'https://alpendre.houseguests.workers.dev',
+    key: '',         // ex.: 'pk_0123456789abcdef01234567'
+  },
 };
 
 /* ---------- Configuração (editar aqui) ---------- */
@@ -58,6 +65,10 @@ const T = {
     mailSubject: (a, b) => `Pedido de reserva · ${a} a ${b}`,
     mailBody: d => `Olá,\n\nGostaria de pedir uma reserva na Quinta do Cabeço.\n\nChegada: ${d.in}\nSaída: ${d.out}\nEstadia: ${d.nights}\nHóspedes: ${d.adults} adultos, ${d.children} crianças\nValor estimado: ${d.total} (sinal de 30%: ${d.deposit})\n\nNome: ${d.name}\nEmail: ${d.email}\nTelemóvel: ${d.phone || '-'}\n\n${d.message ? `Mensagem:\n${d.message}\n\n` : ''}Li e aceito os termos de reserva e cancelamento.\n\nObrigado,\n${d.name}`,
     doneMail: d => `${d.name}, o pedido para ${d.nights} de ${d.in} a ${d.out} (${d.guests}, ${d.total}) está pronto a enviar.`,
+    doneSent: d => `${d.name}, recebemos o seu pedido para ${d.nights} de ${d.in} a ${d.out} (${d.guests}, ${d.total}). Referência ${d.code}.`,
+    sending: 'A enviar…',
+    errSend: 'Não foi possível enviar o pedido. Tente novamente dentro de momentos.',
+    availAlp: d => `Disponibilidade em tempo real, sincronizada com o Booking e o Airbnb · atualizada a ${d}.`,
     cats: { facade: 'Fachada', 'common-area': 'Sala', kitchen: 'Cozinha', 'pool-area': 'Exterior', 'room-1': 'Quarto 1', 'room-2': 'Quarto 2', 'room-3': 'Quarto 3', 'room-4': 'Quarto 4', bathrooms: 'Casas de banho', 'laundry-room': 'Lavandaria' },
     all: 'Todas',
     photo: 'Fotografia',
@@ -87,6 +98,10 @@ const T = {
     mailSubject: (a, b) => `Booking request · ${a} to ${b}`,
     mailBody: d => `Hello,\n\nI would like to request a booking at Quinta do Cabeço.\n\nArrival: ${d.in}\nDeparture: ${d.out}\nStay: ${d.nights}\nGuests: ${d.adults} adults, ${d.children} children\nEstimated price: ${d.total} (30% deposit: ${d.deposit})\n\nName: ${d.name}\nEmail: ${d.email}\nPhone: ${d.phone || '-'}\n\n${d.message ? `Message:\n${d.message}\n\n` : ''}I have read and accept the booking and cancellation terms.\n\nThank you,\n${d.name}`,
     doneMail: d => `${d.name}, your request for ${d.nights} from ${d.in} to ${d.out} (${d.guests}, ${d.total}) is ready to send.`,
+    doneSent: d => `${d.name}, we have received your request for ${d.nights} from ${d.in} to ${d.out} (${d.guests}, ${d.total}). Reference ${d.code}.`,
+    sending: 'Sending…',
+    errSend: 'We could not send your request. Please try again in a moment.',
+    availAlp: d => `Live availability, synced with Booking.com and Airbnb · updated ${d}.`,
     cats: { facade: 'Façade', 'common-area': 'Living room', kitchen: 'Kitchen', 'pool-area': 'Outdoors', 'room-1': 'Bedroom 1', 'room-2': 'Bedroom 2', 'room-3': 'Bedroom 3', 'room-4': 'Bedroom 4', bathrooms: 'Bathrooms', 'laundry-room': 'Laundry' },
     all: 'All',
     photo: 'Photo',
@@ -115,8 +130,10 @@ const FLAGS = {
   booking: /^https?:\/\//.test(clean(SITE.bookingUrl)),
   airbnb: /^https?:\/\//.test(clean(SITE.airbnbUrl)),
   payments: !!SITE.payments,
+  alpendre: /^pk_[a-f0-9]{24}$/.test(clean(SITE.alpendre && SITE.alpendre.key)),
   sync: false, // passa a true quando há calendários do Booking/Airbnb ligados
 };
+const ALP = FLAGS.alpendre ? `${clean(SITE.alpendre.api).replace(/\/$/, '')}/api/public/${clean(SITE.alpendre.key)}` : '';
 const LINKS = {
   email: () => `mailto:${clean(SITE.email)}`,
   whatsapp: () => `https://wa.me/${clean(SITE.whatsapp)}`,
@@ -219,8 +236,23 @@ const addDays = (d, n) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + 
 const today = new Date(); today.setHours(0, 0, 0, 0);
 // Cada dia guardado representa uma noite ocupada (o dia de saída fica livre para nova entrada)
 const busy = new Set();
-let availUpdated = null, availState = 'loading';
+let availUpdated = null, availState = 'loading', availFrom = '';
 async function loadAvailability() {
+  if (FLAGS.alpendre) {
+    try {
+      const res = await fetch(`${ALP}/availability`, { cache: 'no-store' });
+      if (res.ok) {
+        const data = await res.json();
+        busy.clear();
+        (data.booked || []).forEach(r => { for (let d = parse(r.checkIn), end = parse(r.checkOut); d < end; d = addDays(d, 1)) busy.add(iso(d)); });
+        availUpdated = new Date(); availState = 'ok'; availFrom = 'alpendre'; FLAGS.sync = true;
+        applyNeeds();
+        if (checkin && checkout && rangeHasBusy(checkin, checkout)) { checkin = checkout = null; syncInputs(); }
+        renderCalendar(); updateQuote(); renderAvailNote();
+        return;
+      }
+    } catch (e) { /* tenta os ficheiros do site */ }
+  }
   for (const url of CONFIG.availability) {
     try {
       const res = await fetch(url, { cache: 'no-store' });
@@ -231,7 +263,7 @@ async function loadAvailability() {
         for (let d = parse(r.start), end = parse(r.end); d < end; d = addDays(d, 1)) busy.add(iso(d));
       }));
       availUpdated = data.updated ? new Date(data.updated) : null;
-      availState = 'ok';
+      availState = 'ok'; availFrom = 'file';
       FLAGS.sync = ['booking', 'airbnb'].some(k => data.sources?.[k]);
       applyNeeds();
       // Se a estadia escolhida deixou de estar livre, limpa a escolha
@@ -245,7 +277,7 @@ async function loadAvailability() {
 function renderAvailNote() {
   const el = $('#availNote'); if (!el) return;
   if (availState === 'ok' && !FLAGS.sync) el.textContent = t().availPending;
-  else if (availState === 'ok' && availUpdated) el.textContent = t().availOk(availUpdated.toLocaleString(lang === 'pt' ? 'pt-PT' : 'en-GB', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }));
+  else if (availState === 'ok' && availUpdated) el.textContent = t()[availFrom === 'alpendre' ? 'availAlp' : 'availOk'](availUpdated.toLocaleString(lang === 'pt' ? 'pt-PT' : 'en-GB', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }));
   else if (availState === 'error') el.textContent = t().availErr;
   else el.textContent = '';
 }
@@ -350,11 +382,11 @@ function formatDone(d) {
   return {
     name: d.name, nights: t().nights(d.q.n), in: fmtDate(d.checkin), out: fmtDate(d.checkout),
     guests: t().guests(d.guests), total: eur(d.q.total), deposit: eur(d.q.deposit),
-    pay: d.pay === 'card' ? t().card : d.pay,
+    pay: d.pay === 'card' ? t().card : d.pay, code: d.code || '',
   };
 }
 
-$('#bookForm').addEventListener('submit', e => {
+$('#bookForm').addEventListener('submit', async e => {
   e.preventDefault();
   const f = e.target, err = $('#formError');
   const guests = +adults.value + +children.value;
@@ -373,7 +405,30 @@ $('#bookForm').addEventListener('submit', e => {
     name: f.name.value.trim(), email: f.email.value.trim(), phone: f.phone.value.trim(), message: f.message.value.trim(),
     checkin, checkout, guests, adults: +adults.value, children: +children.value, q: quoteData(), pay: f.pay.value,
   };
-  if (FLAGS.payments) {
+  if (FLAGS.alpendre) {
+    // O pedido entra no Alpendre como reserva pendente; a casa confirma por email.
+    const btn = f.querySelector('[type=submit]'), label = btn.innerHTML;
+    btn.disabled = true; btn.textContent = t().sending;
+    try {
+      const res = await fetch(`${ALP}/book`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          checkIn: iso(checkin), checkOut: iso(checkout), guestName: lastDone.name, email: lastDone.email,
+          phone: lastDone.phone, guests, message: lastDone.message, total: lastDone.q.total,
+          details: { Adults: lastDone.adults, Children: lastDone.children, 'Deposit (30%)': lastDone.q.deposit,
+            'Deposit method': lastDone.pay === 'card' ? 'card' : lastDone.pay, Language: lang === 'pt' ? 'Portuguese' : 'English' },
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        err.textContent = res.status === 400 && (data.errors || []).some(x => /available/i.test(x)) ? t().errBusy : ((data.errors || []).join(' ') || t().errSend);
+        lastDone = null; loadAvailability(); return;
+      }
+      lastDone.code = data.code;
+    } catch (x) { err.textContent = t().errSend; lastDone = null; return; }
+    finally { btn.disabled = false; btn.innerHTML = label; }
+    loadAvailability(); // as datas pedidas passam a aparecer ocupadas
+  } else if (FLAGS.payments) {
     // Ponto de ligação ao serviço de pagamentos (criar a referência MB WAY / Multibanco
     // ou a sessão de cartão no servidor e enviar o email de confirmação automático).
   } else {
@@ -390,7 +445,7 @@ function mailtoFor(d) {
 }
 function renderDone() {
   if (!lastDone) return;
-  $('#doneSummary').textContent = FLAGS.payments ? t().done(formatDone(lastDone)) : t().doneMail(formatDone(lastDone));
+  $('#doneSummary').textContent = FLAGS.alpendre ? t().doneSent(formatDone(lastDone)) : FLAGS.payments ? t().done(formatDone(lastDone)) : t().doneMail(formatDone(lastDone));
   $('#mailAgain').href = mailtoFor(lastDone);
 }
 $('#bookAgain').addEventListener('click', () => {
